@@ -10,15 +10,48 @@ app.use(session({ secret: 'MYSUPERSECRETWITHLOTSOFCHARACTERSSECRET' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.serializeUser(function(user, done) {
+  /**
+   * Typical Implementation using Models/DB
+    User.create(user, function(err, createdUser) {
+      done(null, createdUser.id);
+    });
+   *
+   */
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  /**
+   * Typical Implementation using Models/DB
+    User.find(userId, function(err, user) {
+      done(null, user);
+    });
+   *
+   */
+  done(null, user);
+});
+
+passport.use(new GoogleStrategy({
+  clientID: 'CLIENTIDHERE',
+  clientSecret: 'CLIENTSECRET',
+  callbackURL: 'http://127.0.0.1:8060/authenticate/callback'
+}, function(accessToken, refreshToken, profile, done) {
+  return done(null, profile);
+}));
+
 app.get('/', function(req, res) {
   res.send('<a href="/authenticate">Continue to login</a>');
 });
 
-app.get('/authenticate', function(req, res, next) {
-  // Put authentication code
-});
+app.get('/authenticate', passport.authenticate('google', {
+  scope: 'https://www.googleapis.com/auth/userinfo.profile'
+}));
 
-app.get('/authenticate/callback', function(req, res, next) {});
+app.get('/authenticate/callback', passport.authenticate('google', {
+  failureRedirect: '/',
+  successRedirect: '/display'
+}));
 
 app.get('/display', function(req, res, next) {
   if (req.user) {
@@ -28,4 +61,4 @@ app.get('/display', function(req, res, next) {
   }
 });
 
-app.listen(8080);
+app.listen(8060);
