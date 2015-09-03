@@ -1,0 +1,19 @@
+{
+  "name": "thinkful-auth-090315",
+  "version": "1.0.0",
+  "description": "Workshop for implementing Auth in Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -r"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tolgaek/thinkful-auth-090315.git"
+  },
+  "author": "Tolga Ekmen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tolgaek/thinkful-auth-090315/issues"
+  },
+  "homepage": "https://github.com/tolgaek/thinkful-auth-090315#readme"
+}
